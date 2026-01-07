@@ -37,7 +37,7 @@ export const TopBar = ({
       zIndex: 100,
       ...style
     }}>
-      {/* Left Section: Logo & Search */}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '32px', flex: 1 }}>
         <div style={{ 
           fontSize: '14px', 

@@ -6,7 +6,7 @@ import { sharedStyles } from "../styles";
 interface SmartButtonProps {
   text: string;
   onClick?: () => void;
-  style?: React.CSSProperties; // Гаднаас нэмэлт стиль авах боломжтой
+  style?: React.CSSProperties; 
   variant?: "primary" | "outline";
 }
 
