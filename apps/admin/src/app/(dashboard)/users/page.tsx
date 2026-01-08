@@ -36,17 +36,14 @@ export default function UsersPage() {
   );
 
   return (
-    <div style={{ paddingBottom: "40px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px" }}>
+    <div style={{ width: "100%", transition: "all 0.4s ease" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "32px" }}>
         <div>
           <h1 style={{ fontSize: "24px", fontWeight: "850", color: "#0f172a", letterSpacing: "-0.04em", margin: 0 }}>Хэрэглэгчид</h1>
-          <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "4px" }}>Системийн нийт {users.length} хэрэглэгчийг удирдаж байна</p>
+          <p style={{ color: "#94a3b8", fontSize: "14px", marginTop: "4px" }}>Нийт {users.length} хэрэглэгч</p>
         </div>
         <div style={{ width: "180px" }}>
-          <SmartButton 
-            text="Шинэ хэрэглэгч +" 
-            onClick={() => router.push("/users/new")} 
-          />
+          <SmartButton text="Шинэ хэрэглэгч +" onClick={() => router.push("/users/new")} />
         </div>
       </div>
 
@@ -54,13 +51,12 @@ export default function UsersPage() {
         background: "#ffffff", 
         borderRadius: "16px", 
         border: "1px solid #f1f5f9",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.02)",
-        overflow: "hidden"
+        boxShadow: "0 1px 3px rgba(0,0,0,0.02)"
       }}>
-        <div style={{ padding: "20px 24px", borderBottom: "1px solid #f1f5f9", background: "#ffffff" }}>
+        <div style={{ padding: "20px 24px", borderBottom: "1px solid #f1f5f9" }}>
           <div style={{ width: "320px" }}>
             <SmartInput 
-              placeholder="Нэр эсвэл имэйлээр хайх..." 
+              placeholder="Хайх..." 
               value={searchTerm}
               onChange={(val) => setSearchTerm(val)}
               hideLabel={true}
@@ -68,12 +64,13 @@ export default function UsersPage() {
           </div>
         </div>
 
-        <div style={{ maxHeight: "600px", overflowY: "auto" }}>
-          <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: 0, textAlign: "left" }}>
-            <thead style={{ position: "sticky", top: 0, zIndex: 10, background: "#fcfcfd" }}>
+        {/* Table Container with overflow prevention */}
+        <div style={{ width: "100%", overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: 0, textAlign: "left", minWidth: "600px" }}>
+            <thead style={{ background: "#fcfcfd" }}>
               <tr>
                 <th style={{ padding: "14px 24px", fontSize: "10px", fontWeight: "800", color: "#94a3b8", textTransform: "uppercase", borderBottom: "1px solid #f1f5f9" }}>Хэрэглэгч</th>
-                <th style={{ padding: "14px 24px", fontSize: "10px", fontWeight: "800", color: "#94a3b8", textTransform: "uppercase", borderBottom: "1px solid #f1f5f9" }}>Эрх (Role)</th>
+                <th style={{ padding: "14px 24px", fontSize: "10px", fontWeight: "800", color: "#94a3b8", textTransform: "uppercase", borderBottom: "1px solid #f1f5f9" }}>Эрх</th>
                 <th style={{ padding: "14px 24px", fontSize: "10px", fontWeight: "800", color: "#94a3b8", textTransform: "uppercase", borderBottom: "1px solid #f1f5f9" }}>Төлөв</th>
                 <th style={{ padding: "14px 24px", borderBottom: "1px solid #f1f5f9" }}></th>
               </tr>
@@ -83,9 +80,7 @@ export default function UsersPage() {
                 <tr key={user.id} style={{ transition: "background 0.2s" }}>
                   <td style={{ padding: "16px 24px", borderBottom: "1px solid #f8fafc" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                      <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#f1f5f9", color: "#64748b", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "12px" }}>
-                        {user.name[0]}
-                      </div>
+                      <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "#f1f5f9", color: "#64748b", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "700", fontSize: "12px" }}>{user.name[0]}</div>
                       <div>
                         <div style={{ fontWeight: "700", color: "#0f172a", fontSize: "14px" }}>{user.name}</div>
                         <div style={{ color: "#94a3b8", fontSize: "12px" }}>{user.email}</div>
@@ -97,17 +92,8 @@ export default function UsersPage() {
                   </td>
                   <td style={{ padding: "16px 24px", borderBottom: "1px solid #f8fafc" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                      <div style={{ 
-                        width: "6px", height: "6px", borderRadius: "50%", 
-                        background: user.status === "Active" ? "#22c55e" : "#cbd5e1" 
-                      }} />
-                      <span style={{ 
-                        fontSize: "12px", 
-                        fontWeight: "700",
-                        color: user.status === "Active" ? "#16a34a" : "#64748b"
-                      }}>
-                        {user.status}
-                      </span>
+                      <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: user.status === "Active" ? "#22c55e" : "#cbd5e1" }} />
+                      <span style={{ fontSize: "12px", fontWeight: "700", color: user.status === "Active" ? "#16a34a" : "#64748b" }}>{user.status}</span>
                     </div>
                   </td>
                   <td style={{ padding: "16px 24px", textAlign: "right", borderBottom: "1px solid #f8fafc" }}>

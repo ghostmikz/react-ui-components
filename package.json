@@ -11,5 +11,8 @@
   "scripts": {
     "admin": "npm run dev -w admin",
     "dev": "npm run dev -w admin"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3"
   }
 }

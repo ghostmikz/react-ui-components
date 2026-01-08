@@ -11,9 +11,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@repo/ui": "file:repo-ui-1.0.0.tgz",
-    "devextreme": "latest",
-    "devextreme-react": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

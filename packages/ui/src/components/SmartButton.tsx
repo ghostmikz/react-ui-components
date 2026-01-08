@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-// Хэрэв sharedStyles байгаа бол импортлоно, байхгүй бол дотор нь объект үүсгэнэ
-import { sharedStyles } from "../styles"; 
 
 interface SmartButtonProps {
   text: string;
@@ -12,7 +10,6 @@ interface SmartButtonProps {
 
 export const SmartButton = ({ text, onClick, style, variant = "primary" }: SmartButtonProps) => {
   
-  // Үндсэн стиль (styles.ts-ээс эсвэл шууд эндээс)
   const baseStyle: React.CSSProperties = {
     height: "46px",
     padding: "0 24px",

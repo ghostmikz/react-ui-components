@@ -8,13 +8,27 @@ interface Option {
 
 interface SmartSelectProps {
   options: Option[];
-  value: any;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  value: string | number; // Specific type instead of 'any'
+  onChange: (value: string) => void; // Returns value directly, not the event
   label?: string;
   hideLabel?: boolean;
+  placeholder?: string;
 }
 
-export const SmartSelect = ({ options, value, onChange, label, hideLabel }: SmartSelectProps) => {
+export const SmartSelect = ({ 
+  options, 
+  value, 
+  onChange, 
+  label, 
+  hideLabel,
+  placeholder = "Сонгох..." 
+}: SmartSelectProps) => {
+  
+  // Logic to handle change and return the value string
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
     <div style={{ 
       display: 'flex', 
@@ -33,7 +47,6 @@ export const SmartSelect = ({ options, value, onChange, label, hideLabel }: Smar
         </label>
       )}
 
-      {/* Select Container */}
       <div style={{ 
         position: 'relative', 
         width: '100%', 
@@ -42,10 +55,10 @@ export const SmartSelect = ({ options, value, onChange, label, hideLabel }: Smar
       }}>
         <select 
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           style={{ 
             width: '100%',
-            height: '46px', // SmartInput-тай ижил өндөр
+            height: '46px', 
             padding: '0 35px 0 14px', 
             border: '1px solid #e2e8f0',
             borderRadius: '8px',
@@ -56,9 +69,8 @@ export const SmartSelect = ({ options, value, onChange, label, hideLabel }: Smar
             outline: 'none',
             fontFamily: 'inherit',
             cursor: 'pointer',
-            appearance: 'none', // Хөтчийн default сумыг нуух
+            appearance: 'none',
             WebkitAppearance: 'none',
-            MozAppearance: 'none',
             transition: 'all 0.2s ease',
             boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
           }}
@@ -71,6 +83,9 @@ export const SmartSelect = ({ options, value, onChange, label, hideLabel }: Smar
             e.currentTarget.style.boxShadow = '0 1px 2px rgba(0,0,0,0.05)';
           }}
         >
+          {/* Default placeholder option */}
+          <option value="" disabled>{placeholder}</option>
+          
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
@@ -78,14 +93,13 @@ export const SmartSelect = ({ options, value, onChange, label, hideLabel }: Smar
           ))}
         </select>
         
+        {/* Custom Arrow Icon */}
         <div style={{ 
           position: 'absolute', 
           right: '14px', 
           pointerEvents: 'none',
           color: '#64748b',
           fontSize: '10px',
-          display: 'flex',
-          alignItems: 'center',
           userSelect: 'none'
         }}>
           ▼
@@ -93,14 +107,7 @@ export const SmartSelect = ({ options, value, onChange, label, hideLabel }: Smar
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        select:hover {
-          border-color: #cbd5e1;
-        }
-        option {
-          padding: 10px;
-          background: #ffffff;
-          color: #0f172a;
-        }
+        select:hover { border-color: #cbd5e1; }
       `}} />
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SmartInput } from "./SmartInput";
 
@@ -22,9 +22,18 @@ export const TopBar = ({
 }: TopBarProps) => {
   const router = useRouter();
 
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (val: string) => {
+    setSearchValue(val);
+    if (onSearch) {
+      onSearch(val);
+    }
+  };
+
   return (
     <header style={{
-      height: '72px', // Бага зэрэг өндөр болгож зай авлаа
+      height: '72px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -54,13 +63,18 @@ export const TopBar = ({
           <SmartInput 
             placeholder="Хурдан хайлт..." 
             hideLabel={true}
-            onChange={(e: any) => onSearch?.(e.target.value)}
-            style={{ height: '40px' }} 
+            value={searchValue}
+            onChange={handleSearchChange} 
+            style={{ 
+              height: '40px', 
+              marginBottom: 0, 
+              backgroundColor: '#f8fafc',
+              border: '1px solid #f1f5f9'
+            }} 
           />
         </div>
       </div>
 
-      {/* Right Section: Profile */}
       <div 
         onClick={() => router.push("/profile")}
         style={{ 
@@ -76,7 +90,7 @@ export const TopBar = ({
         onMouseEnter={(e) => (e.currentTarget.style.background = "#f8fafc")}
         onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
       >
-        <div style={{ textAlign: 'right', display: 'none', md: 'block' } as any}>
+        <div style={{ textAlign: 'right' }}>
           <div style={{ 
             fontSize: '13px', 
             fontWeight: '700', 
@@ -106,10 +120,15 @@ export const TopBar = ({
           fontWeight: '700',
           color: '#ffffff',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          flexShrink: 0
+          flexShrink: 0,
+          overflow: 'hidden'
         }}>
           {user.avatar ? (
-             <img src={user.avatar} alt={user.name} style={{ width: '100%', height: '100%', borderRadius: '10px' }} />
+             <img 
+               src={user.avatar} 
+               alt={user.name} 
+               style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+             />
           ) : (
              user.name.charAt(0)
           )}

@@ -1,10 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { Drawer } from "devextreme-react/drawer";
-import { List } from "devextreme-react/list";
-
-const DXDrawer = Drawer as any;
-const DXList = List as any;
 
 export interface NavigationItem {
   id: number;
@@ -17,131 +12,167 @@ interface SmartSidebarProps {
   children: React.ReactNode;
   items: NavigationItem[];
   onItemClick?: (item: NavigationItem) => void;
-  user?: { name: string; email: string }; // Профайлын мэдээлэл нэмэв
+  user?: { name: string; email: string; role?: string };
+  activePath?: string;
 }
 
-export const SmartSidebar = ({ children, items, onItemClick, user = { name: "Chingunjav", email: "admin@smart.mn" } }: SmartSidebarProps) => {
+export const SmartSidebar = ({ 
+  children, 
+  items, 
+  onItemClick, 
+  user = { name: "Chingunjav", email: "admin@smart.mn", role: "Админ" },
+  activePath 
+}: SmartSidebarProps) => {
   const [isOpened, setIsOpened] = useState(true);
 
-  const NavigationTemplate = (item: NavigationItem) => {
-    return (
-      <div className="nav-item-wrapper" style={{
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-        padding: isOpened ? '10px 16px' : '10px 0',
-        fontFamily: 'ui-sans-serif, system-ui, -apple-system, sans-serif',
-        transition: 'all 0.3s'
-      }}>
-        <span style={{ fontSize: '20px', minWidth: isOpened ? '30px' : '100%', textAlign: 'center' }}>
-          {item.emoji}
-        </span>
-        {isOpened && (
-          <span style={{ marginLeft: '12px', fontSize: '14px', fontWeight: '600', whiteSpace: 'nowrap' }}>
-            {item.text}
-          </span>
-        )}
-      </div>
-    );
-  };
-
   return (
-    <div style={{ height: '100vh', overflow: 'hidden', fontFamily: 'ui-sans-serif, system-ui, sans-serif' }}>
-      <DXDrawer
-        opened={isOpened}
-        openedStateMode="shrink"
-        position="left"
-        revealMode="slide"
-        height="100%"
-        component={() => (
+    <div style={{ 
+      display: 'flex', 
+      height: '100vh', 
+      width: '100vw', 
+      overflow: 'hidden', 
+      backgroundColor: '#ffffff', 
+      fontFamily: '"Plus Jakarta Sans", sans-serif' 
+    }}>
+      
+      {/* --- PINNED FLUID SIDEBAR --- */}
+      <aside style={{ 
+        width: isOpened ? '280px' : '88px', 
+        backgroundColor: '#fcfcfd', 
+        borderRight: '1px solid #f1f5f9',
+        height: '100vh',
+        transition: 'width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)',
+        display: 'flex',
+        flexDirection: 'column',
+        flexShrink: 0,
+        position: 'relative',
+        zIndex: 50
+      }}>
+        
+        {/* Modern Handle Toggle Button */}
+        <div 
+          onClick={() => setIsOpened(!isOpened)}
+          style={{ 
+            position: 'absolute', 
+            right: '-12px', 
+            top: '48px', 
+            width: '24px', 
+            height: '24px',
+            borderRadius: '8px', 
+            background: '#ffffff', 
+            border: '1px solid #e2e8f0', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.06)',
+            zIndex: 100,
+            transition: 'transform 0.2s, background 0.2s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <svg 
+            width="12" height="12" viewBox="0 0 12 12" fill="none" 
+            style={{ 
+                transform: isOpened ? 'rotate(0deg)' : 'rotate(180deg)', 
+                transition: 'transform 0.4s ease' 
+            }}
+          >
+            <path d="M7.5 9L4.5 6L7.5 3" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+
+        {/* Header */}
+        <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
           <div style={{ 
-            width: isOpened ? '260px' : '72px', 
-            backgroundColor: '#ffffff',
-            borderRight: '1px solid #f1f5f9',
-            height: '100%',
-            transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            display: 'flex',
-            flexDirection: 'column' // БОСОО БҮТЭЦ
+            minWidth: '40px', height: '40px', 
+            background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)', 
+            borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(99, 102, 241, 0.2)',
+            flexShrink: 0
           }}>
-            {/* 1. Header Section */}
-            <div style={{ padding: '24px', textAlign: 'center', flexShrink: 0 }}>
-               <span style={{ fontSize: '18px', fontWeight: '900', letterSpacing: '-1px', color: '#0f172a' }}>
-                 {isOpened ? "SMART ADMIN" : "S"}
-               </span>
-            </div>
+            <span style={{ color: 'white', fontWeight: 'bold', fontSize: '18px' }}>S</span>
+          </div>
+          <span style={{ 
+            marginLeft: '16px', fontWeight: '800', color: '#0f172a', fontSize: '15px',
+            opacity: isOpened ? 1 : 0, 
+            transform: isOpened ? 'translateX(0)' : 'translateX(-10px)',
+            transition: 'all 0.4s ease', 
+            whiteSpace: 'nowrap',
+            letterSpacing: '-0.5px'
+          }}>
+            SMART ADMIN
+          </span>
+        </div>
 
-            {/* 2. Scrollable List Section */}
-            <div style={{ flex: 1, overflowY: 'auto' }}>
-              <DXList
-                dataSource={items}
-                hoverStateEnabled={true}
-                focusStateEnabled={false}
-                selectionMode="single"
-                onItemClick={(e: any) => onItemClick?.(e.itemData)}
-                itemRender={NavigationTemplate}
-                elementAttr={{ class: "sidebar-list" }}
-              />
-            </div>
-
-            {/* 3. FIXED FOOTER SECTION (Profile) */}
-            <div style={{ 
-              padding: '16px', 
-              borderTop: '1px solid #f1f5f9', 
-              flexShrink: 0, 
-              backgroundColor: '#ffffff' 
-            }}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '12px',
-                padding: '8px',
-                borderRadius: '12px',
-                background: '#f8fafc',
-                justifyContent: isOpened ? 'flex-start' : 'center'
-              }}>
-                <div style={{ 
-                  width: '32px', height: '32px', borderRadius: '8px', 
-                  backgroundColor: '#0f172a', color: 'white',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 'bold', flexShrink: 0
+        {/* Navigation */}
+        <nav style={{ flex: 1, padding: '0 16px', overflowY: 'auto', overflowX: 'hidden' }}>
+          {items.map((item) => {
+            const isActive = activePath === item.path;
+            return (
+              <div 
+                key={item.id}
+                onClick={() => onItemClick?.(item)}
+                style={{
+                  display: 'flex', alignItems: 'center', padding: '12px 16px', margin: '4px 0',
+                  borderRadius: '14px', cursor: 'pointer', 
+                  transition: 'all 0.2s ease',
+                  backgroundColor: isActive ? '#f1f5f9' : 'transparent',
+                  color: isActive ? '#6366f1' : '#64748b',
+                }}
+              >
+                <span style={{ 
+                    fontSize: '20px', 
+                    minWidth: '24px', 
+                    textAlign: 'center',
+                    filter: isActive ? 'none' : 'grayscale(1)',
+                }}>{item.emoji}</span>
+                
+                <span style={{ 
+                  marginLeft: '16px', fontSize: '14px', fontWeight: '600',
+                  opacity: isOpened ? 1 : 0, 
+                  transition: 'opacity 0.3s ease', 
+                  whiteSpace: 'nowrap'
                 }}>
-                  {user.name.charAt(0)}
-                </div>
-                {isOpened && (
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '13px', fontWeight: '700', color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {user.name}
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#64748b' }}>Admin</div>
-                  </div>
-                )}
+                  {item.text}
+                </span>
               </div>
+            );
+          })}
+        </nav>
+
+        {/* User Footer */}
+        <div style={{ padding: '20px', marginTop: 'auto' }}>
+          <div style={{ 
+            display: 'flex', alignItems: 'center', padding: '10px',
+            background: isOpened ? '#ffffff' : 'transparent', 
+            borderRadius: '16px', 
+            border: isOpened ? '1px solid #f1f5f9' : '1px solid transparent',
+            transition: 'all 0.3s'
+          }}>
+            <div style={{
+                width: '36px', height: '36px', borderRadius: '10px',
+                backgroundColor: '#0f172a', color: '#fff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontWeight: 'bold', flexShrink: 0
+            }}>
+                {user.name.charAt(0)}
             </div>
-          </div>
-        )}
-      >
-        {/* Main Content Area */}
-        <div style={{ backgroundColor: '#f8fafc', height: '100vh', overflowY: 'auto' }}>
-          <div style={{ padding: '16px 24px', position: 'sticky', top: 0, zIndex: 10, backgroundColor: '#f8fafc', display: 'flex', justifyContent: 'flex-start' }}>
-            <button 
-              onClick={() => setIsOpened(!isOpened)}
-              style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '8px 12px', cursor: 'pointer' }}
-            >
-              {isOpened ? "⬅️" : "➡️"}
-            </button>
-          </div>
-          <div style={{ padding: '0 24px 24px 24px' }}>
-            {children}
+            {isOpened && (
+              <div style={{ marginLeft: '12px', overflow: 'hidden' }}>
+                <p style={{ color: '#0f172a', fontSize: '13px', margin: 0, fontWeight: '700', whiteSpace: 'nowrap' }}>{user.name}</p>
+                <p style={{ color: '#94a3b8', fontSize: '11px', margin: 0, whiteSpace: 'nowrap' }}>{user.role}</p>
+              </div>
+            )}
           </div>
         </div>
-      </DXDrawer>
+      </aside>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        .sidebar-list { border: none !important; }
-        .dx-list-item { border: none !important; margin: 2px 8px !important; border-radius: 8px !important; }
-        .dx-list-item.dx-list-item-selected { background-color: #0f172a !important; color: white !important; }
-        .dx-list-item.dx-list-item-selected .nav-item-wrapper span { color: white !important; }
-      `}} />
+      {/* --- CONTENT AREA --- */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+        {children}
+      </div>
     </div>
   );
 };

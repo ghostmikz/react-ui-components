@@ -1,13 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { TextBox as DXTextBox, Button as DXTextBoxButton } from "devextreme-react/text-box";
-import { Validator as DXValidator, RequiredRule as DXRequiredRule } from "devextreme-react/validator";
-import { sharedStyles } from "../styles";
-
-const TextBox = DXTextBox as any;
-const TextBoxButton = DXTextBoxButton as any;
-const Validator = DXValidator as any;
-const RequiredRule = DXRequiredRule as any;
 
 interface SmartInputProps {
   label?: string;
@@ -18,110 +10,83 @@ interface SmartInputProps {
   onChange?: (value: string) => void;
   readOnly?: boolean;
   hideLabel?: boolean;
-  style?: React.CSSProperties; // Гаднаас стиль авах боломжтой болгов
+  style?: React.CSSProperties;
+  error?: string;
 }
 
-export const SmartInput = ({ 
-  label, 
-  placeholder, 
-  mode = "text", 
-  required, 
-  value, 
+export const SmartInput = ({
+  label,
+  placeholder,
+  mode = "text",
+  required,
+  value,
   onChange,
   readOnly,
   hideLabel,
-  style // Проп-оос авч байна
+  style,
+  error
 }: SmartInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const currentMode = mode === "password" ? (isPasswordVisible ? "text" : "password") : mode;
+  const [isFocused, setIsFocused] = useState(false);
 
-  // Өвөрмөц ID үүсгэх (Scoped CSS-д зориулагдсан)
-  const inputId = React.useId().replace(/:/g, "");
+  // LOGIC: Ensure we handle the value correctly
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e.target.value); // This tells the parent (LoginPage) to update the state
+    }
+  };
+
+  const isPassword = mode === "password";
+  const currentType = isPassword ? (isPasswordVisible ? "text" : "password") : mode;
 
   return (
-    <div className={`smart-input-container-${inputId}`} style={{ 
-      width: '100%',
-      marginBottom: (label && !hideLabel) ? '20px' : '0px',
-      fontFamily: 'ui-sans-serif, system-ui, -apple-system, sans-serif'
-    }}>
-      {(label && !hideLabel) && (
-        <label style={{ 
-          display: 'block', 
-          fontSize: '13px', 
-          marginBottom: '6px', 
-          color: '#475569', 
-          fontWeight: '600',
-        }}>
+    <div style={{ width: '100%', marginBottom: (label && !hideLabel) ? '20px' : '0px' }}>
+      {label && !hideLabel && (
+        <label style={{ display: 'block', fontSize: '13px', marginBottom: '6px', color: '#475569', fontWeight: '600' }}>
           {label}
         </label>
       )}
       
-      <TextBox
-        mode={currentMode}
-        value={value}
-        onValueChange={onChange}
-        placeholder={placeholder}
-        readOnly={readOnly}
-        stylingMode="outlined"
-        // Inline-style болон sharedStyles-ийг нэгтгэх
-        elementAttr={{ 
-          style: { 
-            ...sharedStyles.input, 
-            ...style, // Гаднаас ирсэн стиль (жишээ нь TopBar-аас ирэх height: '40px')
-            display: 'flex',
-            alignItems: 'center'
-          } 
-        }}
-      >
-        {mode === "password" && (
-          <TextBoxButton
-            name="password"
-            location="after"
-            options={{
-              icon: isPasswordVisible ? "eyeopen" : "eyeclose",
-              stylingMode: "text",
-              onClick: () => setIsPasswordVisible(!isPasswordVisible),
-              elementAttr: { style: { color: '#94a3b8', cursor: 'pointer' } }
-            }}
-          />
+      <div style={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        border: error ? '1px solid #ef4444' : (isFocused ? '1px solid #0f172a' : '1px solid #e2e8f0'),
+        borderRadius: '8px',
+        height: '46px',
+        backgroundColor: '#fff',
+        boxShadow: isFocused ? '0 0 0 1px #0f172a' : 'none',
+        ...style
+      }}>
+        <input
+          type={currentType}
+          value={value || ""} // This must be controlled by the parent
+          onChange={handleChange} // This MUST exist for typing to work
+          placeholder={placeholder}
+          readOnly={readOnly}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          style={{
+            width: '100%',
+            height: '100%',
+            padding: '0 16px',
+            border: 'none',
+            outline: 'none',
+            borderRadius: '8px',
+            fontSize: '14px'
+          }}
+        />
+        {isPassword && (
+          <button 
+            type="button"
+            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+            style={{ padding: '0 12px', background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}
+          >
+            {isPasswordVisible ? "👁️" : "🙈"}
+          </button>
         )}
-        {required && (
-          <Validator>
-            <RequiredRule message={`${label || 'Утга'} заавал оруулна уу`} />
-          </Validator>
-        )}
-      </TextBox>
-
-      {/* Scoped Self-Styling */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .smart-input-container-${inputId} .dx-texteditor.dx-editor-outlined {
-          background-color: ${style?.backgroundColor || sharedStyles.input.background || '#ffffff'} !important;
-          border: ${style?.border || sharedStyles.input.border} !important;
-          border-radius: ${style?.borderRadius || sharedStyles.input.borderRadius || '8px'} !important;
-          height: ${style?.height || sharedStyles.input.height || '46px'} !important;
-          transition: all 0.2s ease;
-        }
-        .smart-input-container-${inputId} .dx-texteditor-input {
-          padding: ${sharedStyles.input.padding || '0 16px'} !important;
-          font-size: ${sharedStyles.input.fontSize || '14px'} !important;
-          font-family: inherit !important;
-          color: #0f172a !important;
-        }
-        .smart-input-container-${inputId} .dx-placeholder {
-          font-family: inherit !important;
-          padding: ${sharedStyles.input.padding || '0 16px'} !important;
-          color: #94a3b8 !important;
-        }
-        .smart-input-container-${inputId} .dx-texteditor.dx-state-focused {
-          border-color: #0f172a !important;
-          box-shadow: 0 0 0 1px #0f172a !important;
-        }
-        /* DevExtreme-ийн default хөх хүрээг арилгах */
-        .smart-input-container-${inputId} .dx-texteditor.dx-editor-outlined.dx-state-active,
-        .smart-input-container-${inputId} .dx-texteditor.dx-editor-outlined.dx-state-focused {
-          border-color: #0f172a !important;
-        }
-      `}} />
+      </div>
+      {error && <span style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>{error}</span>}
     </div>
   );
 };

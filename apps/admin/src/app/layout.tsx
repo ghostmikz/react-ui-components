@@ -1,6 +1,3 @@
-import "devextreme/dist/css/dx.material.blue.light.compact.css";
-import { locale, loadMessages } from "devextreme/localization";
-
 const mnMessages = {
   mn: {
     Yes: "Тийм",
@@ -9,8 +6,6 @@ const mnMessages = {
   }
 };
 
-loadMessages(mnMessages);
-locale("mn");
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

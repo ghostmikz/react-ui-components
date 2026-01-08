@@ -1,11 +1,34 @@
 "use client";
+import React, { useState } from "react";
 import Link from "next/link";
 import { SmartInput, SmartButton } from "@repo/ui";
 
 export default function LoginPage() {
-  const handleLogin = (e: any) => {
-    const result = e.validationGroup.validate();
-    if (result.isValid) {
+  // 1. Setup local state to hold the input values
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  // 2. Setup state to track if the user tried to submit with empty fields
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const handleLogin = () => {
+    // 3. Manual validation logic (replacing DevExtreme validationGroup)
+    let valid = true;
+    const newErrors = { email: "", password: "" };
+
+    if (!email) {
+      newErrors.email = "Имэйл хаяг заавал оруулна уу";
+      valid = false;
+    }
+    if (!password) {
+      newErrors.password = "Нууц үг заавал оруулна уу";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+
+    if (valid) {
+      // If all checks pass, redirect
       window.location.href = '/dashboard';
     }
   };
@@ -44,8 +67,25 @@ export default function LoginPage() {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          <SmartInput label="Имэйл хаяг" placeholder="name@domain.com" required />
-          <SmartInput label="Нууц үг" placeholder="••••••••" mode="password" required />
+          {/* 4. Connect inputs to state and pass the onChange functions */}
+          <SmartInput 
+            label="Имэйл хаяг" 
+            placeholder="name@domain.com" 
+            value={email}
+            onChange={(val) => setEmail(val)}
+            error={errors.email}
+            required 
+          />
+          
+          <SmartInput 
+            label="Нууц үг" 
+            placeholder="••••••••" 
+            mode="password" 
+            value={password}
+            onChange={(val) => setPassword(val)}
+            error={errors.password}
+            required 
+          />
 
           <div style={{ marginTop: "16px" }}>
             <SmartButton text="Нэвтрэх" onClick={handleLogin} />

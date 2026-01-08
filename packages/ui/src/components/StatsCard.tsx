@@ -6,12 +6,11 @@ interface StatsCardProps {
   value: string;
   change: string;
   trend: "up" | "down" | "neutral";
-  style?: React.CSSProperties; // Гаднаас стиль авах
+  style?: React.CSSProperties; 
   labelStyle?: React.CSSProperties;
 }
 
 export const StatsCard = ({ label, value, change, trend, style, labelStyle }: StatsCardProps) => {
-  // Трэндээс хамаарах өнгө болон дэвсгэр
   const getTrendStyles = () => {
     switch (trend) {
       case "up": return { color: "#16a34a", bg: "#f0fdf4", icon: "↑" };
@@ -36,7 +35,6 @@ export const StatsCard = ({ label, value, change, trend, style, labelStyle }: St
       fontFamily: 'ui-sans-serif, system-ui, -apple-system, sans-serif',
       ...style 
     }}>
-      {/* Label хэсэг */}
       <div style={{ 
         color: "#64748b", 
         fontSize: "11px", 
@@ -48,7 +46,6 @@ export const StatsCard = ({ label, value, change, trend, style, labelStyle }: St
         {label}
       </div>
 
-      {/* Утга болон Трэнд */}
       <div style={{ 
         display: "flex", 
         alignItems: "center", 
@@ -64,7 +61,6 @@ export const StatsCard = ({ label, value, change, trend, style, labelStyle }: St
           {value}
         </div>
 
-        {/* Trend Badge */}
         <div style={{ 
           display: "flex",
           alignItems: "center",

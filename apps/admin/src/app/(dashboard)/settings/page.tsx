@@ -9,6 +9,10 @@ export default function SettingsPage() {
     systemName: "Smart Admin System"
   });
 
+  const updateField = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
   const languageOptions = [
     { value: "mn", label: "Монгол (MN)" },
     { value: "en", label: "English (EN)" },
@@ -23,6 +27,7 @@ export default function SettingsPage() {
     <div style={{ 
       maxWidth: '640px', 
       margin: '0 auto', 
+      padding: '40px 20px',
       fontFamily: 'ui-sans-serif, system-ui, sans-serif',
       color: '#0f172a'
     }}>
@@ -46,7 +51,8 @@ export default function SettingsPage() {
         background: '#ffffff', 
         borderRadius: '12px', 
         border: '1px solid #f1f5f9',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
       }}>
         
         <div style={{ padding: '24px', borderBottom: '1px solid #f8fafc' }}>
@@ -66,7 +72,7 @@ export default function SettingsPage() {
               <SmartSelect 
                 options={languageOptions} 
                 value={formData.language}
-                onChange={(e: any) => setFormData({ ...formData, language: e.target.value })}
+                onChange={(val) => updateField("language", val)}
               />
             </SmartFormField>
             
@@ -74,7 +80,7 @@ export default function SettingsPage() {
               <SmartSelect 
                 options={themeOptions} 
                 value={formData.theme}
-                onChange={(e: any) => setFormData({ ...formData, theme: e.target.value })}
+                onChange={(val) => updateField("theme", val)}
               />
             </SmartFormField>
           </div>
@@ -98,7 +104,8 @@ export default function SettingsPage() {
                 <SmartInput 
                   value={formData.systemName}
                   placeholder="Системийн нэрийг оруулна уу" 
-                  onChange={(val: string) => setFormData({ ...formData, systemName: val })}
+                  onChange={(val) => updateField("systemName", val)}
+                  hideLabel={true} 
                 />
               </SmartFormField>
             </div>
@@ -132,7 +139,10 @@ export default function SettingsPage() {
           <div style={{ width: '160px' }}>
             <SmartButton 
               text="Хадгалах" 
-              onClick={() => console.log(formData)} 
+              onClick={() => {
+                console.log("Saving settings:", formData);
+                alert("Тохиргоо амжилттай хадгалагдлаа!");
+              }} 
             />
           </div>
         </div>
