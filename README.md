@@ -14,7 +14,6 @@ A minimalist React dashboard built with Next.js 15. This project shows how to ma
 
 ## ✨ Key Features
 
-* **Zero Global CSS:** All styling is handled via React props for total predictability.
 * **Smart Components:** Reusable SmartSidebar, SmartTable, and SmartInput built for speed.
 * **Role Management:** Built-in UI states for Admin, Editor, and User roles.
 * **Feedback System:** Native React Toast notifications for all successful actions.
