@@ -16,10 +16,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const menu = [
     { id: 0, text: "Хяналт", path: "/dashboard", emoji: "📊" }, 
     { id: 1, text: "Хэрэглэгчид", path: "/users", emoji: "👥" },
-    { id: 5, text: "Түүх", path: "/history", emoji: "📜" }, 
-    { id: 2, text: "Профайл", path: "/profile", emoji: "👤" },
-    { id: 3, text: "Тохиргоо", path: "/settings", emoji: "⚙️" },
-    { id: 4, text: "Гарах", path: "/login", emoji: "🚪" },
+    { id: 2, text: "Түүх", path: "/history", emoji: "📜" }, 
+    { id: 3, text: "Профайл", path: "/profile", emoji: "👤" },
+    { id: 4, text: "Тохиргоо", path: "/settings", emoji: "⚙️" },
+    { id: 5, text: "Гарах", path: "/login", emoji: "🚪" },
   ];
 
   return (
@@ -34,7 +34,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           SMART ADMIN
         </span>
       }
-      // 2. Handle the click to go home
       onHeaderClick={() => router.push("/dashboard")}
     >
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, height: "100vh" }}>

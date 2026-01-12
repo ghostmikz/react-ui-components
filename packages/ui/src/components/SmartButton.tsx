@@ -25,14 +25,13 @@ export const SmartButton = ({ text, onClick, style, variant = "primary" }: Smart
     backgroundColor: variant === "outline" ? "transparent" : "#0f172a",
     color: variant === "outline" ? "#0f172a" : "#ffffff",
     width: "100%",
-    ...style, // Гаднаас орж ирэх стиль багцын стилийг дарах (Override) боломжийг олгоно
+    ...style, 
   };
 
   return (
     <button 
       onClick={onClick} 
       style={baseStyle}
-      // Hover эффект өгөхөд хэрэгтэй
       onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.9")}
       onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
     >

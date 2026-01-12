@@ -3,7 +3,6 @@ import React from "react";
 import { StatsCard, DashboardCard } from "@repo/ui";
 
 export default function DashboardPage() {
-  // Enhanced stats with icons and descriptions
   const stats = [
     { 
       label: "Нийт хэрэглэгч", 

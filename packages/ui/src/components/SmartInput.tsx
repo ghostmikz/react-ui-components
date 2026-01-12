@@ -29,10 +29,9 @@ export const SmartInput = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
-  // LOGIC: Ensure we handle the value correctly
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
-      onChange(e.target.value); // This tells the parent (LoginPage) to update the state
+      onChange(e.target.value); 
     }
   };
 
